@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/ph4t3/lamport-hash/frontend/cmd"
+import "l-hash-frontend/cmd"
 
 func main() {
 	cmd.Execute()

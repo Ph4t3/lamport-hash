@@ -56,8 +56,8 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Printf("%s Success\n\n%s", chalk.Blue, chalk.Reset)
-	fmt.Fprintf(w, "success")
+	fmt.Printf("%s Success\n\n%s", chalk.Green, chalk.Reset)
+	fmt.Fprintf(w, "User Successfully logged in.")
 }
 
 func GetN(w http.ResponseWriter, req *http.Request) {

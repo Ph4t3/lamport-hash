@@ -14,13 +14,13 @@ func Reset(w http.ResponseWriter, req *http.Request) {
 	var p ResetDTO
 
 	err := json.NewDecoder(req.Body).Decode(&p)
-	if err != nil || p.Username == "" || p.Hash == "" || p.Newhash == "" {
+	if err != nil || p.Username == "" || p.Hash == "" || p.Newhash == "" || p.N == 0 {
 		fmt.Printf("%s Error ::%s Invalid Data\n\n", chalk.Red, chalk.Reset)
 		http.Error(w, "Invalid Data", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Printf(" Username :: %s \n Hash :: %s\n New Hash :: %s\n", p.Username, p.Hash, p.Newhash)
+	fmt.Printf(" Username :: %s \n Hash :: %s\n New Hash :: %s\n n :: %d\n", p.Username, p.Hash, p.Newhash, p.N)
 	if !database.Check(p.Username) {
 		fmt.Printf("%s Error ::%s User does not exist\n\n", chalk.Red, chalk.Reset)
 		http.Error(w, "Invalid Username", http.StatusBadRequest)
@@ -35,7 +35,7 @@ func Reset(w http.ResponseWriter, req *http.Request) {
 	}
 
 	userCreds.Hash = p.Newhash
-	userCreds.N = 100
+	userCreds.N = p.N
 	database.Set(p.Username, userCreds)
 
 	fmt.Printf("%s Success\n\n%s", chalk.Blue, chalk.Reset)

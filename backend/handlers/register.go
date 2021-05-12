@@ -14,13 +14,13 @@ func Register(w http.ResponseWriter, req *http.Request) {
 
 	var p RegisterDTO
 	err := json.NewDecoder(req.Body).Decode(&p)
-	if err != nil || p.Hash == "" || p.Username == "" {
+	if err != nil || p.Hash == "" || p.Username == "" || p.N == 0 {
 		fmt.Printf("%s Error :: %sInvalid Data\n\n", chalk.Red, chalk.Reset)
 		http.Error(w, "Invalid Data", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Printf(" Username :: %s \n Hash :: %s\n", p.Username, p.Hash)
+	fmt.Printf(" Username :: %s \n Hash :: %s\n n :: %d\n", p.Username, p.Hash, p.N)
 
 	if database.Check(p.Username) {
 		fmt.Printf("%s Error :: %sUser already registered\n\n", chalk.Red, chalk.Reset)
@@ -28,9 +28,9 @@ func Register(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	userCreds := database.UserCreds{Hash: p.Hash, N: 100}
+	userCreds := database.UserCreds{Hash: p.Hash, N: p.N}
 	database.Set(p.Username, userCreds)
 
 	fmt.Printf("%s Success\n\n%s", chalk.Blue, chalk.Reset)
-	fmt.Fprintf(w, "Success")
+	fmt.Fprintf(w, "User successfully registered")
 }
