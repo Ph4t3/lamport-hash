@@ -5,12 +5,14 @@ type ResetDTO struct {
 	Hash     string
 	Newhash  string
 	N        int
+	Salt     string
 }
 
 type RegisterDTO struct {
 	Username string
 	Hash     string
 	N        int
+	Salt     string
 }
 
 type LoginDTO struct {
@@ -23,5 +25,6 @@ type GetNDTO struct {
 }
 
 type GetNResponse struct {
-	N int
+	N    int
+	Salt string
 }

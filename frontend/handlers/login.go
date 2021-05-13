@@ -20,12 +20,12 @@ func Login() {
 	fmt.Scanf("%s", &details.Hash)
 	fmt.Println()
 
-	ok, n := GetN(details.Username)
+	ok, n, salt := GetN(details.Username)
 	if !ok {
 		return
 	}
 
-	details.Hash = Hash(details.Hash, n-1)
+	details.Hash = Hash(details.Hash+salt, n-1)
 	data, err := json.Marshal(details)
 
 	resp, err := http.Post("http://localhost:8080/login", "application/json", bytes.NewBuffer(data))
@@ -42,7 +42,7 @@ func Login() {
 	}
 }
 
-func GetN(username string) (bool, int) {
+func GetN(username string) (bool, int, string) {
 	var details = models.GetNDTO{username}
 	data, err := json.Marshal(details)
 	fmt.Printf("%sSending request for N ...%s\n", chalk.Green, chalk.Reset)
@@ -56,11 +56,11 @@ func GetN(username string) (bool, int) {
 	if resp.StatusCode == 200 {
 		var res models.GetNResponse
 		json.NewDecoder(resp.Body).Decode(&res)
-		fmt.Printf("%sServer Response :: %sN = %d\n\n", chalk.Green, chalk.Reset, res.N)
-		return true, res.N
+		fmt.Printf("%sServer Response :: %sN = %d, Salt = %s\n\n", chalk.Green, chalk.Reset, res.N, res.Salt)
+		return true, res.N, res.Salt
 	} else {
 		body, _ := io.ReadAll(resp.Body)
 		fmt.Printf("%sError :: %s%s\n", chalk.Red, chalk.Reset, body)
-		return false, 0
+		return false, 0, ""
 	}
 }

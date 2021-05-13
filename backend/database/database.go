@@ -2,6 +2,7 @@ package database
 
 type UserCreds struct {
 	Hash string
+	Salt string
 	N    int
 }
 

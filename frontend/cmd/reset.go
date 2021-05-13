@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"l-hash-frontend/handlers"
 
 	"github.com/spf13/cobra"
 )
@@ -12,7 +12,7 @@ var resetCmd = &cobra.Command{
 	Short: "Reset user password",
 	Long:  `Use this command to reset your user password.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("reset called")
+		handlers.Reset()
 	},
 }
 

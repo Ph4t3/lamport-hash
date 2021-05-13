@@ -9,10 +9,22 @@ import (
 	"io"
 	"l-hash-frontend/models"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/ttacon/chalk"
 )
+
+func SaltGenerator() string {
+	rand.Seed(time.Now().UnixNano())
+	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]rune, 16)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
 
 func Register() {
 	var details = models.RegisterDTO{}
@@ -24,7 +36,9 @@ func Register() {
 	fmt.Scanf("%d", &details.N)
 	fmt.Println()
 
-	details.Hash = Hash(details.Hash, details.N)
+	details.Salt = SaltGenerator()
+	fmt.Printf("%sSalt :: %s%s\n", chalk.Blue, chalk.Reset, details.Salt)
+	details.Hash = Hash(details.Hash+details.Salt, details.N)
 	data, err := json.Marshal(details)
 
 	resp, err := http.Post("http://localhost:8080/register", "application/json", bytes.NewBuffer(data))
@@ -42,7 +56,7 @@ func Register() {
 }
 
 func Hash(hash string, n int) string {
-	fmt.Printf("Hashing %s %d times...\n", hash, n)
+	fmt.Printf("Hashing %s%s%s %d times...\n", chalk.Magenta, hash, chalk.Reset, n)
 
 	for i := 0; i < n; i++ {
 		hashByte := sha256.Sum256([]byte(hash))
