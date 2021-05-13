@@ -4,7 +4,7 @@ type RegisterDTO struct {
 	Username string `validate:"required" json:"username"`
 	Hash     string `validate:"required" json:"hash"`
 	Salt     string `json:"salt"`
-	N        int    `validate:"required,gt=2" json:"n"`
+	N        int    `validate:"required,gte=2" json:"n"`
 }
 
 type LoginDTO struct {
