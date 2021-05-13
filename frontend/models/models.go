@@ -1,5 +1,9 @@
 package models
 
+//
+// Various input formats for different POST requests
+//
+
 type ResetDTO struct {
 	Username string
 	Hash     string

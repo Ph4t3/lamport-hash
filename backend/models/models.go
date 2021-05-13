@@ -1,5 +1,8 @@
 package models
 
+//
+// Various input formats for different POST requests
+//
 type RegisterDTO struct {
 	Username string `validate:"required" json:"username"`
 	Hash     string `validate:"required" json:"hash"`

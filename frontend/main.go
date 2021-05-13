@@ -17,6 +17,8 @@ package main
 
 import "l-hash-frontend/cmd"
 
+// Main function.
 func main() {
+	// Execute to run the cmd from /cmd/root.go
 	cmd.Execute()
 }
