@@ -56,7 +56,11 @@ func GetN(username string) (bool, int, string) {
 	if resp.StatusCode == 200 {
 		var res models.GetNResponse
 		json.NewDecoder(resp.Body).Decode(&res)
-		fmt.Printf("%sServer Response :: %sN = %d, Salt = %s\n\n", chalk.Green, chalk.Reset, res.N, res.Salt)
+		if res.Salt == "" {
+			fmt.Printf("%sServer Response :: %sN = %d\n", chalk.Green, chalk.Reset, res.N)
+		} else {
+			fmt.Printf("%sServer Response :: %sN = %d, Salt = %s\n\n", chalk.Green, chalk.Reset, res.N, res.Salt)
+		}
 		return true, res.N, res.Salt
 	} else {
 		body, _ := io.ReadAll(resp.Body)

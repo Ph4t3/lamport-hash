@@ -34,10 +34,19 @@ func Register() {
 	fmt.Scanf("%s", &details.Hash)
 	fmt.Printf("%sn :: %s", chalk.Blue, chalk.Reset)
 	fmt.Scanf("%d", &details.N)
+
+	var choice rune
+	fmt.Printf("\nDo you want to protect password with a salt?(Y/n) ")
+	fmt.Scanf("%c", &choice)
 	fmt.Println()
 
-	details.Salt = SaltGenerator()
-	fmt.Printf("%sSalt :: %s%s\n", chalk.Blue, chalk.Reset, details.Salt)
+	if choice == 'n' || choice == 'N' {
+		details.Salt = ""
+	} else {
+		details.Salt = SaltGenerator()
+		fmt.Printf("%sSalt :: %s%s\n", chalk.Blue, chalk.Reset, details.Salt)
+	}
+
 	details.Hash = Hash(details.Hash+details.Salt, details.N)
 	data, err := json.Marshal(details)
 

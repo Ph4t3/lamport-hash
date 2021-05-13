@@ -22,7 +22,17 @@ func Reset() {
 	fmt.Scanf("%s", &details.Newhash)
 	fmt.Printf("%sn :: %s", chalk.Blue, chalk.Reset)
 	fmt.Scanf("%d", &details.N)
+
+	var choice rune
+	fmt.Printf("\nDo you want to protect password with a salt?(Y/n) ")
+	fmt.Scanf("%c", &choice)
 	fmt.Println()
+	if choice == 'n' || choice == 'N' {
+		details.Salt = ""
+	} else {
+		details.Salt = SaltGenerator()
+		fmt.Printf("%sNew Salt :: %s%s\n", chalk.Blue, chalk.Reset, details.Salt)
+	}
 
 	ok, n, salt := GetN(details.Username)
 	if !ok {
@@ -32,8 +42,6 @@ func Reset() {
 	fmt.Printf("%sHashing Old Password%s\n", chalk.Magenta, chalk.Reset)
 	details.Hash = Hash(details.Hash+salt, n-1)
 	fmt.Printf("\n%sHashing New Password%s\n", chalk.Magenta, chalk.Reset)
-	details.Salt = SaltGenerator()
-	fmt.Printf("%sNew Salt :: %s%s\n", chalk.Blue, chalk.Reset, details.Salt)
 	details.Newhash = Hash(details.Newhash+details.Salt, details.N)
 	data, err := json.Marshal(details)
 

@@ -3,7 +3,7 @@ package models
 type RegisterDTO struct {
 	Username string `validate:"required" json:"username"`
 	Hash     string `validate:"required" json:"hash"`
-	Salt     string `validate:"required" json:"salt"`
+	Salt     string `json:"salt"`
 	N        int    `validate:"required,gt=2" json:"n"`
 }
 
@@ -25,6 +25,6 @@ type ResetDTO struct {
 	Username string `validate:"required" json:"username"`
 	Hash     string `validate:"required" json:"hash"`
 	Newhash  string `validate:"required" json:"newhash"`
-	Salt     string `validate:"required" json:"salt"`
+	Salt     string `json:"salt"`
 	N        int    `validate:"required,gt=2" json:"n"`
 }
